@@ -14,6 +14,8 @@ public class WIP_Battle_mode : MonoBehaviour {
     private GameObject enemySpawned;
     private bool battlemodeStart = false;
 
+    private int buffer = 10;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -26,11 +28,19 @@ public class WIP_Battle_mode : MonoBehaviour {
             if(battlemode)
             {
                 battlemode = false;
-                //remove enemy
-                //move camera to non-battle position
+                //Debug.Log("removing enemy...");
+                Destroy(enemySpawned);
+                //Debug.Log("enemy removed");
+                
+                mainCamera.GetComponent<Look_At>().enabled = false;
+                mainCamera.GetComponent<Dungeon_Crawler>().enabled = true;
+
                 //enable player movement
+                player.GetComponent<Player_Movement>().enabled = true;
+
+                buffer = 10;
             }
-            if(!battlemode)
+            if(!battlemode && buffer <= 0)
             {
                 battlemode = true;
                 battlemodeStart = true;
@@ -41,12 +51,23 @@ public class WIP_Battle_mode : MonoBehaviour {
         {
             enemySpawnPosition = player.transform.position;
 
-            enemySpawnPosition.x = enemySpawnPosition.x + enemyOffset;
+            //enemySpawnPosition.x = enemySpawnPosition.x + enemyOffset;
             enemySpawnPosition.z = enemySpawnPosition.z + enemyOffset;
 
             player.GetComponent<Player_Movement>().enabled = false;
-            enemySpawned = Instantiate(enemyToSpawn, enemySpawnPosition, Quaternion.identity);
-            //have camera move to correct view
+
+            enemySpawned = (GameObject) Instantiate(enemyToSpawn, enemySpawnPosition, Quaternion.identity);
+
+            //Debug.Log(enemySpawned.name);
+            
+            mainCamera.GetComponent<Dungeon_Crawler>().enabled = false;
+            mainCamera.GetComponent<Look_At>().enabled = true;
+
+            battlemodeStart = false;
+            buffer = 10;
         }
+
+        buffer--;
+        //Debug.Log(buffer);
     }
 }

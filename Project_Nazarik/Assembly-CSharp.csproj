@@ -61,9 +61,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Dungeon_Crawler.cs" />
-    <Compile Include="Assets\Player_Movement.cs" />
-    <Compile Include="Assets\WIP_Battle_mode.cs" />
+    <Compile Include="Assets\Scripts\Dungeon_Crawler.cs" />
+    <Compile Include="Assets\Scripts\Look_At.cs" />
+    <Compile Include="Assets\Scripts\Player_Movement.cs" />
+    <Compile Include="Assets\Scripts\WIP_Battle_mode.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/GitHub/Project_Nazarik/Project_Nazarik/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
@@ -72,6 +73,9 @@
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>D:/GitHub/Project_Nazarik/Project_Nazarik/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.StandardEvents">
+      <HintPath>D:/GitHub/Project_Nazarik/Project_Nazarik/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>D:/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

@@ -11,6 +11,7 @@ public class Dungeon_Crawler : MonoBehaviour {
         void Start()
         {
             offset = transform.position - target.transform.position;
+            //move to correct position
         }
 
         void LateUpdate()
