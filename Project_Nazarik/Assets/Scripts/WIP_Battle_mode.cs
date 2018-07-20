@@ -13,7 +13,7 @@ public class WIP_Battle_mode : MonoBehaviour {
     private bool battlemode = false;
     private GameObject enemySpawned;
     private bool battlemodeStart = false;
-
+    private Vector3 battlePosition;
     private int buffer = 10;
 
 	// Use this for initialization
@@ -32,8 +32,8 @@ public class WIP_Battle_mode : MonoBehaviour {
                 Destroy(enemySpawned);
                 //Debug.Log("enemy removed");
                 
-                mainCamera.GetComponent<Look_At>().enabled = false;
-                mainCamera.GetComponent<Dungeon_Crawler>().enabled = true;
+                mainCamera.GetComponent<Dungeon_Crawler>().enabled = false;
+                mainCamera.GetComponent<Mouse_Aim>().enabled = true;
 
                 //enable player movement
                 player.GetComponent<Player_Movement>().enabled = true;
@@ -58,10 +58,15 @@ public class WIP_Battle_mode : MonoBehaviour {
 
             enemySpawned = (GameObject) Instantiate(enemyToSpawn, enemySpawnPosition, Quaternion.identity);
 
-            //Debug.Log(enemySpawned.name);
-            
-            mainCamera.GetComponent<Dungeon_Crawler>().enabled = false;
-            mainCamera.GetComponent<Look_At>().enabled = true;
+            battlePosition = (enemySpawnPosition - player.transform.position) / 2;
+            battlePosition = player.transform.position + battlePosition;
+
+            //Debug.Log(battlePosition);
+
+            transform.position = battlePosition;
+
+            mainCamera.GetComponent<Mouse_Aim>().enabled = false;
+            mainCamera.GetComponent<Dungeon_Crawler>().enabled = true;
 
             battlemodeStart = false;
             buffer = 10;

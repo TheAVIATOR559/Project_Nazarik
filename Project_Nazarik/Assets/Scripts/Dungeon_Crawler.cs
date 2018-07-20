@@ -8,13 +8,27 @@ public class Dungeon_Crawler : MonoBehaviour {
         [SerializeField] float damping = 1;
         private Vector3 offset;
 
-        void Start()
-        {
-            offset = transform.position - target.transform.position;
-            //move to correct position
-        }
+    //private void Start()
+    //{
+    //    offset = transform.position - target.transform.position;
+    //}
 
-        void LateUpdate()
+    //private void OnDisable()
+    //{
+    //    Debug.Log("offset: " + offset);
+    //    Debug.Log("position: " + transform.position);
+    //    Debug.Log("rotation: " + transform.rotation);
+    //}
+
+    void OnEnable()
+        {
+        
+
+        offset = transform.position - target.transform.position;
+
+    }
+
+    void LateUpdate()
         {
             Vector3 desiredPosition = target.transform.position + offset;
             Vector3 position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * damping);
