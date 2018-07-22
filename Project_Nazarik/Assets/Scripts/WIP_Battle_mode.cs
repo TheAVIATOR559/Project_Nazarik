@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class WIP_Battle_mode : MonoBehaviour {
 
-    [SerializeField] GameObject enemyToSpawn;
+    [SerializeField] GameObject[] enemiesList;
     [SerializeField] GameObject player;
+    [SerializeField] GameObject[] alliesList;
     [SerializeField] Camera mainCamera;
     [SerializeField] float enemyOffset = 0;
     [SerializeField] float cameraBCDistance = 0;
@@ -19,14 +20,22 @@ public class WIP_Battle_mode : MonoBehaviour {
     private int buffer = 10;
     private Vector3 enemyDirection;
     private Vector3 battleCameraPostion;
+    private GameObject enemyToSpawn;
+    private int enemyCount;
 
 	// Use this for initialization
 	void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void OnEnable()
+    {
+        enemyCount = Random.Range(1, 4);
+        Debug.Log(enemyCount);
+    }
+
+    // Update is called once per frame
+    void Update () {
 
         //change this to an event flag of start of battle
         if (Input.GetKeyUp(KeyCode.B))

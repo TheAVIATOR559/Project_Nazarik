@@ -9,7 +9,9 @@ public class Enemy_Behavior : MonoBehaviour {
     [SerializeField] float roamRange = 0;
     [SerializeField] float detectionAngle = 0;
     [SerializeField] float detectionDistance = 0;
-    [SerializeField] float chaseSpeed = 0;
+
+    //not currently used might add later 
+    //[SerializeField] float chaseSpeed = 0; 
 
     private GameObject previousTarget;
     private Vector3 targetDir;
@@ -43,25 +45,24 @@ public class Enemy_Behavior : MonoBehaviour {
                 //Debug.Log("within range");
 
                 transform.LookAt(m_target.transform, transform.up);
-                transform.Translate(transform.forward * chaseSpeed * Time.deltaTime);
+                Vector3 position = Vector3.Lerp(transform.position, m_target.transform.position, Time.deltaTime);
+                transform.position = position;
             }
         }
 
         if(m_target.tag == "Roaming_Sphere")
         {
             transform.LookAt(m_target.transform, transform.up);
-            //transform.Translate(transform.forward * chaseSpeed * Time.deltaTime);
-
             Vector3 position = Vector3.Lerp(transform.position, m_target.transform.position, Time.deltaTime);
             transform.position = position;
 
-            if (1==3) //make this so that the enemy only needs to get close to center of roaming sphere
+            if (Vector3.Distance(transform.position, m_target.transform.position) <= 1)
             {
                 m_target = previousTarget;
             }
         }
 
-        Debug.Log(m_target.name);
+        //Debug.Log(m_target.name);
 	}
 
     public void ChangeTarget(GameObject target)

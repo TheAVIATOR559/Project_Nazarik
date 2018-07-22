@@ -130,4 +130,3 @@ MonoBehaviour:
   roamRange: 30
   detectionAngle: 45
   detectionDistance: 7.5
-  chaseSpeed: 5

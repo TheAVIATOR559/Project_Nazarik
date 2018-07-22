@@ -557,9 +557,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16eb55b8277149479e5e22fbf4d3eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyToSpawn: {fileID: 1876798665757450, guid: b879746fe1fb84b4c9d27b37a309473b,
-    type: 2}
-  player: {fileID: 372314320}
+  enemiesList:
+  - {fileID: 1876798665757450, guid: b879746fe1fb84b4c9d27b37a309473b, type: 2}
+  - {fileID: 1187942133276164, guid: 76a05758ea643d64e9ff60016dc9e72a, type: 2}
+  - {fileID: 1451472408565798, guid: cf9384574f5d488478b828199eadda9d, type: 2}
+  - {fileID: 1853325178677726, guid: 5abf392bb414e224aab4e7e1ccf052c0, type: 2}
+  player: {fileID: 1165890909669184, guid: ddaf1f023abd93a479194d4f32254d56, type: 2}
+  alliesList:
+  - {fileID: 1058520337561042, guid: 450502a7b28c874469e22e3ba423cb48, type: 2}
+  - {fileID: 1603933238984932, guid: 608ede2ff7b1dc748a74909b94e00b4a, type: 2}
+  - {fileID: 1800296236300626, guid: 288194c8c99d0d341862c7a04ad080ca, type: 2}
   mainCamera: {fileID: 193692748}
   enemyOffset: 5
   cameraBCDistance: 5
