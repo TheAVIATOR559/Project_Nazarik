@@ -4,37 +4,31 @@ using UnityEngine;
 
 public class Dungeon_Crawler : MonoBehaviour {
 
-        [SerializeField] GameObject target;
-        [SerializeField] float damping = 1;
-        private Vector3 offset;
+    [SerializeField] GameObject m_target;
+    [SerializeField] float damping = 1;
 
-    //private void Start()
-    //{
-    //    offset = transform.position - target.transform.position;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    Debug.Log("offset: " + offset);
-    //    Debug.Log("position: " + transform.position);
-    //    Debug.Log("rotation: " + transform.rotation);
-    //}
-
-    void OnEnable()
-        {
-        
-
-        offset = transform.position - target.transform.position;
-
-    }
+    private Vector3 m_desiredPosition;
+    private Quaternion m_targetRotation;
 
     void LateUpdate()
-        {
-            Vector3 desiredPosition = target.transform.position + offset;
-            Vector3 position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * damping);
-            transform.position = position;
+    {
+        //moves the camera all slow and cinematic like
+        Vector3 position = Vector3.Lerp(transform.position, m_desiredPosition, Time.deltaTime * damping);
+        transform.position = position;
+            
+        //rotates the camera to look at the target all slow and cinematic like
+        m_targetRotation = Quaternion.LookRotation(m_target.transform.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, m_targetRotation, Time.deltaTime * damping);
+    }
 
-            transform.LookAt(target.transform.position);
-        }
+    public void OnBattleStart(Vector3 desiredPostion)
+    {
+        m_desiredPosition = desiredPostion;
+    }
+
+    public void ChangeTarget(GameObject target)
+    {
+        m_target = target;
+    }
 
 }
