@@ -9,6 +9,7 @@ public class Enemy_Behavior : MonoBehaviour {
     [SerializeField] float roamRange = 0;
     [SerializeField] float detectionAngle = 0;
     [SerializeField] float detectionDistance = 0;
+    [SerializeField] GameObject battleController;
 
     //not currently used might add later 
     //[SerializeField] float chaseSpeed = 0; 
@@ -69,5 +70,14 @@ public class Enemy_Behavior : MonoBehaviour {
     {
         previousTarget = m_target;
         m_target = target;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Player")
+        {
+            battleController.GetComponent<WIP_Battle_mode>().enabled = true;
+            Destroy(this.gameObject);
+        }
     }
 }
