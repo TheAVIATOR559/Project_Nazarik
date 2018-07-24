@@ -32,7 +32,7 @@ public class WIP_Battle_mode : MonoBehaviour {
 
     private void OnEnable()
     {
-        battleLayout = /*Random.Range(0, 1)*/ 0;
+        battleLayout = /*Random.Range(0, 1)*/ 1;
         enemyCount = /*Random.Range(1, 4)*/ 4;
         Debug.Log("enemyCount: " + enemyCount);
         player.GetComponent<Player_Movement>().enabled = false;
@@ -47,21 +47,46 @@ public class WIP_Battle_mode : MonoBehaviour {
                 if(i == 1)
                 {
                     enemySpawnPosition = player.transform.position + (player.transform.forward * (enemyOffset + enemySpacing));
-                    Debug.Log("enemy spawn position math:" + player.transform.position + " + (" + player.transform.forward + " * " + enemyOffset + " + " + enemySpacing + ")");
+                    //Debug.Log("enemy spawn position math:" + player.transform.position + " + (" + player.transform.forward + " * " + enemyOffset + " + " + enemySpacing + ")");
                 }
                 else
                 {
-                    Debug.Log(i - 1);
+                    //Debug.Log(i - 1);
                     enemySpawnPosition = enemiesSpawned[i - 2].transform.position + (player.transform.forward * enemySpacing);
-                    Debug.Log("enemy spawn position math:" + enemiesSpawned[i - 2].transform.position + " + (" + player.transform.forward + " * " + " + " + enemySpacing + ")");
+                    //Debug.Log("enemy spawn position math:" + enemiesSpawned[i - 2].transform.position + " + (" + player.transform.forward + " * " + " + " + enemySpacing + ")");
                 }
 
                 
                 //Debug.Log("enemySpawnPosition variable:" + enemySpawnPosition);
                 enemiesSpawned[i - 1] = (GameObject)Instantiate(enemiesList[enemyNumber], enemySpawnPosition, Quaternion.identity);
-                Debug.Log(enemiesSpawned[i -1].name + ": " + enemiesSpawned[i - 1].transform.position);
+                //Debug.Log(enemiesSpawned[i -1].name + ": " + enemiesSpawned[i - 1].transform.position);
                 enemyDirection = player.transform.position - enemiesSpawned[i - 1].transform.position;
                 enemiesSpawned[i - 1].transform.rotation = Quaternion.LookRotation(enemyDirection);
+            }
+            else if(battleLayout == 1)//shape layout
+            {
+                if(i == 1)
+                {
+                    enemySpawnPosition = player.transform.position + (player.transform.forward * enemyOffset);
+                }
+                else if(i == 2)
+                {
+                    enemySpawnPosition = enemiesSpawned[i - 2].transform.position + (enemiesSpawned[i - 2].transform.right * enemySpacing);
+                }
+                else if(i == 3)
+                {
+                    enemySpawnPosition = enemiesSpawned[i - 3].transform.position + (enemiesSpawned[i - 3].transform.right * (enemySpacing * 2));//need to have this set back a row
+                }
+                else if(i == 4)
+                {
+                    enemySpawnPosition = enemiesSpawned[i - 4].transform.position - (enemiesSpawned[i - 4].transform.right * (enemySpacing));//need to have this set back a row
+                }
+
+                enemiesSpawned[i - 1] = (GameObject)Instantiate(enemiesList[enemyNumber], enemySpawnPosition, Quaternion.identity);
+                Debug.Log(enemiesSpawned[i - 1].name + ": " + enemiesSpawned[i - 1].transform.position);
+                //enemyDirection = player.transform.position - enemiesSpawned[i - 1].transform.position;
+                //enemiesSpawned[i - 1].transform.rotation = Quaternion.LookRotation(enemyDirection);
+
             }
             
         }
