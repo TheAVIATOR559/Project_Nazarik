@@ -12,6 +12,7 @@ public class WIP_Battle_mode : MonoBehaviour {
     [SerializeField] float enemySpacing = 0;
     [SerializeField] float cameraBCDistance = 0;
     [SerializeField] float cameraVerticalOffset = 0;
+    [SerializeField] float backRowOffset = 0;
 
     private Vector3 enemySpawnPosition;
     private bool battlemode = false;
@@ -75,11 +76,11 @@ public class WIP_Battle_mode : MonoBehaviour {
                 }
                 else if(i == 3)
                 {
-                    enemySpawnPosition = enemiesSpawned[i - 3].transform.position + (enemiesSpawned[i - 3].transform.right * (enemySpacing * 2));//need to have this set back a row
+                    enemySpawnPosition = enemiesSpawned[i - 3].transform.position + (enemiesSpawned[i - 3].transform.right * (enemySpacing * 2)) + (enemiesSpawned[i - 3].transform.forward * backRowOffset);//pull this in toward the center a bit
                 }
                 else if(i == 4)
                 {
-                    enemySpawnPosition = enemiesSpawned[i - 4].transform.position - (enemiesSpawned[i - 4].transform.right * (enemySpacing));//need to have this set back a row
+                    enemySpawnPosition = enemiesSpawned[i - 4].transform.position - (enemiesSpawned[i - 4].transform.right * enemySpacing) + (enemiesSpawned[i - 4].transform.forward * backRowOffset);//pull this in toward the center a bit
                 }
 
                 enemiesSpawned[i - 1] = (GameObject)Instantiate(enemiesList[enemyNumber], enemySpawnPosition, Quaternion.identity);
