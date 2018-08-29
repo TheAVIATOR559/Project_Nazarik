@@ -24,7 +24,9 @@ public class WIP_Battle_mode : MonoBehaviour {
     private Vector3 battleCameraPostion;
     //private GameObject[] enemiesToSpawn;
     private int enemyCount;
-    private int battleLayout;//0 for line | 1 for shape
+    private int battleLayout;//0 for line | 1 for trapezoid
+    private Vector3 allySpawnPosition;
+    private GameObject[] alliesSpawned = new GameObject[3];
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +39,7 @@ public class WIP_Battle_mode : MonoBehaviour {
         enemyCount = /*Random.Range(1, 4)*/ 4;
         Debug.Log("enemyCount: " + enemyCount);
         player.GetComponent<Player_Movement>().enabled = false;
+        player.GetComponent<Rigidbody>().freezeRotation = true;
         for(int i = 1; i <= enemyCount; i++)
         {
             //Debug.Log(i);
@@ -49,12 +52,15 @@ public class WIP_Battle_mode : MonoBehaviour {
                 {
                     enemySpawnPosition = player.transform.position + (player.transform.forward * (enemyOffset + enemySpacing));
                     //Debug.Log("enemy spawn position math:" + player.transform.position + " + (" + player.transform.forward + " * " + enemyOffset + " + " + enemySpacing + ")");
+                    allySpawnPosition = player.transform.position - (player.transform.forward * enemySpacing);
                 }
                 else
                 {
                     //Debug.Log(i - 1);
                     enemySpawnPosition = enemiesSpawned[i - 2].transform.position + (player.transform.forward * enemySpacing);
                     //Debug.Log("enemy spawn position math:" + enemiesSpawned[i - 2].transform.position + " + (" + player.transform.forward + " * " + " + " + enemySpacing + ")");
+
+                    allySpawnPosition = alliesSpawned[i - 2].transform.position - (player.transform.forward * enemySpacing);
                 }
 
                 
@@ -63,8 +69,14 @@ public class WIP_Battle_mode : MonoBehaviour {
                 //Debug.Log(enemiesSpawned[i -1].name + ": " + enemiesSpawned[i - 1].transform.position);
                 enemyDirection = player.transform.position - enemiesSpawned[i - 1].transform.position;
                 enemiesSpawned[i - 1].transform.rotation = Quaternion.LookRotation(enemyDirection);
+
+                if(i <= 3)
+                {
+                    alliesSpawned[i - 1] = (GameObject)Instantiate(alliesList[i - 1], allySpawnPosition, Quaternion.identity);
+                    Debug.Log("spawned ally " + i);
+                }
             }
-            else if(battleLayout == 1)//shape layout
+            else if(battleLayout == 1)//trapezoid layout
             {
                 if(i == 1)
                 {
@@ -73,20 +85,35 @@ public class WIP_Battle_mode : MonoBehaviour {
                 else if(i == 2)
                 {
                     enemySpawnPosition = enemiesSpawned[i - 2].transform.position + (enemiesSpawned[i - 2].transform.right * enemySpacing);
+                    allySpawnPosition = player.transform.position + (player.transform.right * enemySpacing);
                 }
                 else if(i == 3)
                 {
-                    enemySpawnPosition = enemiesSpawned[i - 3].transform.position + (enemiesSpawned[i - 3].transform.right * (enemySpacing * 2)) + (enemiesSpawned[i - 3].transform.forward * backRowOffset);//pull this in toward the center a bit
+                    enemySpawnPosition = enemiesSpawned[i - 2].transform.position - (enemiesSpawned[i - 2].transform.forward * backRowOffset * -1.5f) + (enemiesSpawned[i - 3].transform.right);
+                    allySpawnPosition = alliesSpawned[i - 3].transform.position + (alliesSpawned[i - 3].transform.right) - (player.transform.forward * backRowOffset * 1.5f);
                 }
                 else if(i == 4)
                 {
-                    enemySpawnPosition = enemiesSpawned[i - 4].transform.position - (enemiesSpawned[i - 4].transform.right * enemySpacing) + (enemiesSpawned[i - 4].transform.forward * backRowOffset);//pull this in toward the center a bit
+                    enemySpawnPosition = enemiesSpawned[i - 4].transform.position - (enemiesSpawned[i - 4].transform.forward * backRowOffset * -1.5f) - (enemiesSpawned[i - 4].transform.right);
+                    allySpawnPosition = player.transform.position - (player.transform.right) - (player.transform.forward * backRowOffset * 1.5f);
                 }
 
                 enemiesSpawned[i - 1] = (GameObject)Instantiate(enemiesList[enemyNumber], enemySpawnPosition, Quaternion.identity);
-                Debug.Log(enemiesSpawned[i - 1].name + ": " + enemiesSpawned[i - 1].transform.position);
-                //enemyDirection = player.transform.position - enemiesSpawned[i - 1].transform.position;
-                //enemiesSpawned[i - 1].transform.rotation = Quaternion.LookRotation(enemyDirection);
+                Debug.Log("enemy number: " +  i + " " + enemiesSpawned[i - 1].name + ": " + enemiesSpawned[i - 1].transform.position);
+
+                //if (i == enemyCount)
+                //{
+                //    foreach (GameObject enemy in enemiesSpawned)
+                //    {
+                //        enemy.transform.LookAt(player.transform, transform.up);
+                //    }
+                //}
+
+            if(i > 1)
+                {
+                    alliesSpawned[i - 2] = (GameObject)Instantiate(alliesList[i - 2], allySpawnPosition, Quaternion.identity);
+                    Debug.Log("spawned ally " + (i - 1));
+                }
 
             }
             
@@ -132,6 +159,7 @@ public class WIP_Battle_mode : MonoBehaviour {
 
             //enable player movement
             player.GetComponent<Player_Movement>().enabled = true;
+            player.GetComponent<Rigidbody>().freezeRotation = false;
             this.GetComponent<WIP_Battle_mode>().enabled = false;
         }
 
