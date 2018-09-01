@@ -140,13 +140,15 @@ public class WIP_Battle_mode : MonoBehaviour {
         }
 
         ///Working on this. Does weird shit as is
-        //foreach(GameObject obj in enemiesSpawned)
-        //{
-        //    obj.gameObject.transform.position = new Vector3(enemySpawnPosition.x, 0.5f * obj.GetComponent<Collider>().bounds.size.y, enemySpawnPosition.z);
-        //    enemyDirection = player.transform.position - obj.transform.position;
-        //    enemyDirection.y = 0;
-        //    obj.transform.rotation = Quaternion.LookRotation(enemyDirection);
-        //}
+        foreach (GameObject obj in enemiesSpawned)
+        {
+            if(obj != null)
+            {
+                obj.transform.position = new Vector3(obj.transform.position.x, 0.5f * obj.GetComponent<Collider>().bounds.size.y, obj.transform.position.z);
+                obj.transform.rotation = Quaternion.LookRotation(-obj.transform.forward, Vector3.up);
+            }
+        }
+
 
         //enemySpawnPosition = player.transform.position + (player.transform.forward * enemyOffset);
         //enemySpawned = (GameObject)Instantiate(enemyToSpawn, enemySpawnPosition, Quaternion.identity);
@@ -205,7 +207,7 @@ public class WIP_Battle_mode : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.K))
         {
             Debug.Log("enemy turn");
-            //mainCamera.GetComponent<Dungeon_Crawler>().ChangeTarget(enemySpawned);
+            mainCamera.GetComponent<Dungeon_Crawler>().ChangeTarget(enemiesSpawned[0]);
         }
 
         //buffer--;
@@ -218,10 +220,11 @@ public class WIP_Battle_mode : MonoBehaviour {
         if(mode == BattleMode.Line)
         {
             if(m_loopCount <= 3)
-                    {
-                        allySpawnPosition = player.transform.position - (player.transform.forward * (enemySpacing * m_loopCount));
-                        alliesSpawned[m_loopCount - 1] = (GameObject)Instantiate(alliesList[m_loopCount - 1], allySpawnPosition, Quaternion.identity);
-                    }
+                {
+                    allySpawnPosition = player.transform.position - (player.transform.forward * (enemySpacing * m_loopCount));
+                    alliesSpawned[m_loopCount - 1] = (GameObject)Instantiate(alliesList[m_loopCount - 1], allySpawnPosition, Quaternion.identity);
+                    alliesSpawned[m_loopCount - 1].transform.position = new Vector3(alliesSpawned[m_loopCount - 1].transform.position.x, 0.5f * alliesSpawned[m_loopCount - 1].GetComponent<Collider>().bounds.size.y, alliesSpawned[m_loopCount - 1].transform.position.z);
+                }
         }
         else if(mode == BattleMode.Trapezoid)
         {
@@ -241,6 +244,7 @@ public class WIP_Battle_mode : MonoBehaviour {
             if (m_loopCount <= 3)
             {
                 alliesSpawned[m_loopCount - 1] = (GameObject)Instantiate(alliesList[m_loopCount - 1], allySpawnPosition, Quaternion.identity);
+                alliesSpawned[m_loopCount - 1].transform.position = new Vector3(alliesSpawned[m_loopCount - 1].transform.position.x, 0.5f * alliesSpawned[m_loopCount - 1].GetComponent<Collider>().bounds.size.y, alliesSpawned[m_loopCount - 1].transform.position.z);
             }
         }
         

@@ -593,7 +593,7 @@ MonoBehaviour:
   mainCamera: {fileID: 193692748}
   enemyOffset: 5
   enemySpacing: 2
-  cameraBCDistance: 5
+  cameraBCDistance: 12
   cameraVerticalOffset: 2
   backRowOffset: 1.5
 --- !u!4 &1921615596
