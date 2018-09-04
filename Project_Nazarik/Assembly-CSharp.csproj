@@ -63,10 +63,10 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Dungeon_Crawler.cs" />
     <Compile Include="Assets\Scripts\Enemy_Behavior.cs" />
-    <Compile Include="Assets\Scripts\Look_At.cs" />
     <Compile Include="Assets\Scripts\Mouse_Aim.cs" />
     <Compile Include="Assets\Scripts\Player_Movement.cs" />
     <Compile Include="Assets\Scripts\Roaming_Sphere_Trigger.cs" />
+    <Compile Include="Assets\Scripts\Trapezoid_camera.cs" />
     <Compile Include="Assets\Scripts\WIP_Battle_mode.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/GitHub/Project_Nazarik/Project_Nazarik/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
