@@ -604,11 +604,13 @@ MonoBehaviour:
   - {fileID: 1603933238984932, guid: 608ede2ff7b1dc748a74909b94e00b4a, type: 2}
   - {fileID: 1800296236300626, guid: 288194c8c99d0d341862c7a04ad080ca, type: 2}
   mainCamera: {fileID: 193692748}
-  enemyOffset: 5
-  enemySpacing: 2
-  cameraBCDistance: 12
-  cameraVerticalOffset: 2
+  characterOffset: 5
+  characterSpacing: 2
+  cameraBattleLineDistance: 12
+  cameraLineVerticalOffset: 2
   backRowOffset: 1.5
+  cameraBattleTrapDistance: 7.5
+  cameraTrapVerticalOffset: 2
 --- !u!4 &1921615596
 Transform:
   m_ObjectHideFlags: 0
