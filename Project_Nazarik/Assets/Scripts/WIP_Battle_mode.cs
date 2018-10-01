@@ -10,21 +10,24 @@ public class WIP_Battle_mode : MonoBehaviour {
     [SerializeField] Camera mainCamera;
     [SerializeField] float enemyOffset = 0;
     [SerializeField] float enemySpacing = 0;
-    [SerializeField] float cameraBCDistance = 0;
-    [SerializeField] float cameraVerticalOffset = 0;
+    [SerializeField] float lineCameraDistance = 0;
+    [SerializeField] float lineCameraVerticalOffset = 0;
     [SerializeField] float backRowOffset = 0;
+    [SerializeField] float trapezoidCameraDistance = 0;
+    [SerializeField] float trapezoidCameraVerticalOffset = 0;
 
     private Vector3 enemySpawnPosition;
     private GameObject[] enemiesSpawned = new GameObject[4];
     private Vector3 battlePosition;
     private Vector3 enemyDirection;
-    private Vector3 battleCameraPostion;
+    private Vector3 battleCameraPosition;
     private int enemyCount;
     private BattleLayout battleLayout;
     private Vector3 allySpawnPosition;
     private GameObject[] alliesSpawned = new GameObject[3];
     private Vector3 allyDirection;
     private int enemyNumber;
+    private Vector3 enemyCameraPosition;
 
     enum BattleLayout
     {
@@ -39,7 +42,7 @@ public class WIP_Battle_mode : MonoBehaviour {
 
     private void OnEnable()
     {
-        battleLayout = (BattleLayout)Random.Range(0, 2);///SINCE WHEN IS THE UPPER BOUND ON RANGE EXCLUSIVE? WHAT THE HELL, UNITY?!
+        battleLayout = (BattleLayout)/*Random.Range(0, 2)*/ 1;///SINCE WHEN IS THE UPPER BOUND ON RANGE EXCLUSIVE? WHAT THE HELL, UNITY?!
         enemyCount = /*Random.Range(1, 4)*/ 4;
         player.GetComponent<Player_Movement>().enabled = false;
         player.GetComponent<Rigidbody>().freezeRotation = true;
@@ -52,16 +55,31 @@ public class WIP_Battle_mode : MonoBehaviour {
         battlePosition = (enemiesSpawned[0].transform.position - player.transform.position) / 2;
         battlePosition = player.transform.position + battlePosition;
         transform.position = battlePosition;
-        
-        //moving camera to proper position then changing camera scripts
         transform.rotation = Quaternion.LookRotation(player.transform.forward);
-        battleCameraPostion = transform.position;
-        battleCameraPostion.y += cameraVerticalOffset;
-        battleCameraPostion = battleCameraPostion + (transform.right * cameraBCDistance);
-
         mainCamera.GetComponent<Mouse_Aim>().enabled = false;
-        mainCamera.GetComponent<Dungeon_Crawler>().enabled = true;
-        mainCamera.GetComponent<Dungeon_Crawler>().OnBattleStart(battleCameraPostion);
+
+        if (battleLayout == BattleLayout.Line)
+        {
+            //moving camera to proper position then changing camera scripts
+            battleCameraPosition = transform.position;
+            battleCameraPosition.y += lineCameraVerticalOffset;
+            battleCameraPosition = battleCameraPosition + (transform.right * lineCameraDistance);
+
+            mainCamera.GetComponent<Dungeon_Crawler>().enabled = true;
+            mainCamera.GetComponent<Dungeon_Crawler>().OnBattleStart(battleCameraPosition);
+        }
+        if(battleLayout == BattleLayout.Trapezoid)
+        {
+            //battleCameraPosition = transform.position;
+            //battleCameraPosition = battleCameraPosition + (transform.right * (0.5f * enemySpacing));
+            battleCameraPosition = battleCameraPosition + ((player.transform.position + alliesSpawned[0].transform.position) / 2);
+            battleCameraPosition.y += trapezoidCameraVerticalOffset;
+            battleCameraPosition = battleCameraPosition - (transform.forward * trapezoidCameraDistance);
+
+            mainCamera.GetComponent<Trapezoid_camera>().enabled = true;
+            mainCamera.GetComponent<Trapezoid_camera>().ChangeTarget(battleCameraPosition, transform.position);
+        }
+        
     }
 
     // Update is called once per frame
@@ -79,7 +97,14 @@ public class WIP_Battle_mode : MonoBehaviour {
                 Destroy(obj);
             }
 
-            mainCamera.GetComponent<Dungeon_Crawler>().enabled = false;
+            if(battleLayout == BattleLayout.Line)
+            {
+                mainCamera.GetComponent<Dungeon_Crawler>().enabled = false;
+            }
+            if(battleLayout == BattleLayout.Trapezoid)
+            {
+                mainCamera.GetComponent<Trapezoid_camera>().enabled = false;
+            }
             mainCamera.GetComponent<Mouse_Aim>().enabled = true;
 
             //enable player movement
@@ -88,22 +113,40 @@ public class WIP_Battle_mode : MonoBehaviour {
             this.GetComponent<WIP_Battle_mode>().enabled = false;
         }
 
-        //change this to be an event flag for the start of the player turn or the end of the enemy turn
-        if(Input.GetKeyUp(KeyCode.J))
+        //todo change this to be an event flag for the start of the player turn or the end of the enemy turn
+        if(battleLayout == BattleLayout.Line)
         {
-            Debug.Log("player turn");
-            mainCamera.GetComponent<Dungeon_Crawler>().ChangeTarget(player);
+            if (Input.GetKeyUp(KeyCode.J))
+            {
+                Debug.Log("player turn");
+                mainCamera.GetComponent<Dungeon_Crawler>().ChangeTarget(player);
+            }
+
+            if (Input.GetKeyUp(KeyCode.K))
+            {
+                Debug.Log("enemy turn");
+                mainCamera.GetComponent<Dungeon_Crawler>().ChangeTarget(enemiesSpawned[0]);
+            }
         }
 
-        //change this to be an event flag for the start of the enemy turn or the end of the player turn
-        if (Input.GetKeyUp(KeyCode.K))
+        //todo change this to be an event flag for the start of the enemy turn or the end of the player turn
+        if (battleLayout == BattleLayout.Trapezoid)
         {
-            Debug.Log("enemy turn");
-            mainCamera.GetComponent<Dungeon_Crawler>().ChangeTarget(enemiesSpawned[0]);
+            if (Input.GetKeyUp(KeyCode.J))
+            {
+                Debug.Log("player turn");
+                mainCamera.GetComponent<Trapezoid_camera>().ChangeTarget(battleCameraPosition, transform.position);
+            }
+
+            if (Input.GetKeyUp(KeyCode.K))
+            {
+                Debug.Log("enemy turn");
+                //todo calculate enemyCameraPosition here
+                mainCamera.GetComponent<Trapezoid_camera>().ChangeTarget(enemyCameraPosition, transform.position);
+            }
         }
     }
 
-    //todo Add ally rotation
     private void SpawnAllies(int loopCount, BattleLayout layout)
     {
         if(layout == BattleLayout.Line)
@@ -113,6 +156,7 @@ public class WIP_Battle_mode : MonoBehaviour {
                     allySpawnPosition = player.transform.position - (player.transform.forward * (enemySpacing * loopCount));
                     alliesSpawned[loopCount - 1] = (GameObject)Instantiate(alliesList[loopCount - 1], allySpawnPosition, Quaternion.identity);
                     alliesSpawned[loopCount - 1].transform.position = new Vector3(alliesSpawned[loopCount - 1].transform.position.x, 0.5f * alliesSpawned[loopCount - 1].GetComponent<Collider>().bounds.size.y, alliesSpawned[loopCount - 1].transform.position.z);
+                    alliesSpawned[loopCount - 1].transform.rotation = Quaternion.LookRotation(player.transform.forward, player.transform.up);
                 }
         }
         else if(layout == BattleLayout.Trapezoid)
@@ -134,11 +178,12 @@ public class WIP_Battle_mode : MonoBehaviour {
             {
                 alliesSpawned[loopCount - 1] = (GameObject)Instantiate(alliesList[loopCount - 1], allySpawnPosition, Quaternion.identity);
                 alliesSpawned[loopCount - 1].transform.position = new Vector3(alliesSpawned[loopCount - 1].transform.position.x, 0.5f * alliesSpawned[loopCount - 1].GetComponent<Collider>().bounds.size.y, alliesSpawned[loopCount - 1].transform.position.z);
+                alliesSpawned[loopCount - 1].transform.rotation = Quaternion.LookRotation(player.transform.forward, player.transform.up);
             }
         }
     }
 
-    //todo add enemy rotation
+
     private void SpawnEnemies(int loopCount, BattleLayout layout)
     {
         enemyNumber = Random.Range(0, enemiesList.Length);
@@ -155,6 +200,7 @@ public class WIP_Battle_mode : MonoBehaviour {
             }
             enemiesSpawned[loopCount - 1] = (GameObject)Instantiate(enemiesList[enemyNumber], enemySpawnPosition, Quaternion.identity);
             enemiesSpawned[loopCount - 1].transform.position = new Vector3(enemiesSpawned[loopCount - 1].transform.position.x, 0.5f * enemiesSpawned[loopCount - 1].GetComponent<Collider>().bounds.size.y, enemiesSpawned[loopCount - 1].transform.position.z);
+            enemiesSpawned[loopCount - 1].transform.rotation = Quaternion.LookRotation(-1 * player.transform.forward, player.transform.up);
         }
         if(layout == BattleLayout.Trapezoid)
         {
@@ -164,18 +210,19 @@ public class WIP_Battle_mode : MonoBehaviour {
             }
             else if (loopCount == 2)
             {
-                enemySpawnPosition = enemiesSpawned[loopCount - 2].transform.position + (enemiesSpawned[loopCount - 2].transform.right * enemySpacing);
+                enemySpawnPosition = enemiesSpawned[0].transform.position - (enemiesSpawned[0].transform.right * enemySpacing);
             }
             else if (loopCount == 3)
             {
-                enemySpawnPosition = enemiesSpawned[loopCount - 2].transform.position - (enemiesSpawned[loopCount - 2].transform.forward * backRowOffset * -1) + (enemiesSpawned[loopCount - 3].transform.right);
+                enemySpawnPosition = enemiesSpawned[0].transform.position - (enemiesSpawned[0].transform.right * (1.5f * enemySpacing)) - (enemiesSpawned[0].transform.forward * backRowOffset);
             }
             else if (loopCount == 4)
             {
-                enemySpawnPosition = enemiesSpawned[loopCount - 4].transform.position - (enemiesSpawned[loopCount - 4].transform.forward * backRowOffset * -1) - (enemiesSpawned[loopCount - 4].transform.right);
+                enemySpawnPosition = enemiesSpawned[0].transform.position + (enemiesSpawned[0].transform.right * (0.5f * enemySpacing)) - (enemiesSpawned[0].transform.forward * backRowOffset);
             }
             enemiesSpawned[loopCount - 1] = (GameObject)Instantiate(enemiesList[enemyNumber], enemySpawnPosition, Quaternion.identity);
             enemiesSpawned[loopCount - 1].transform.position = new Vector3(enemiesSpawned[loopCount - 1].transform.position.x, 0.5f * enemiesSpawned[loopCount - 1].GetComponent<Collider>().bounds.size.y, enemiesSpawned[loopCount - 1].transform.position.z);
+            enemiesSpawned[loopCount - 1].transform.rotation = Quaternion.LookRotation(-1 * player.transform.forward, player.transform.up);
         }
     }
 }
