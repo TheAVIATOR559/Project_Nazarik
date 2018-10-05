@@ -72,9 +72,15 @@ public class WIP_Battle_mode : MonoBehaviour {
         {
             //battleCameraPosition = transform.position;
             //battleCameraPosition = battleCameraPosition + (transform.right * (0.5f * enemySpacing));
-            battleCameraPosition = battleCameraPosition + ((player.transform.position + alliesSpawned[0].transform.position) / 2);
+            battleCameraPosition = (player.transform.position + alliesSpawned[0].transform.position) / 2;
+            battleCameraPosition = transform.position + battleCameraPosition;
             battleCameraPosition.y += trapezoidCameraVerticalOffset;
             battleCameraPosition = battleCameraPosition - (transform.forward * trapezoidCameraDistance);
+
+            //todo calculate enemyCameraPosition here
+            enemyCameraPosition = enemyCameraPosition + ((enemiesSpawned[0].transform.position + enemiesSpawned[1].transform.position) / 2);
+            battleCameraPosition.y += trapezoidCameraVerticalOffset;
+            battleCameraPosition = battleCameraPosition + (transform.forward * trapezoidCameraDistance);
 
             mainCamera.GetComponent<Trapezoid_camera>().enabled = true;
             mainCamera.GetComponent<Trapezoid_camera>().ChangeTarget(battleCameraPosition, transform.position);
@@ -85,7 +91,7 @@ public class WIP_Battle_mode : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        //change this to an event flag of start of battle
+        //todo change this to an event flag of start of battle
         if (Input.GetKeyUp(KeyCode.B))
         {
             foreach(GameObject obj in enemiesSpawned)
@@ -141,7 +147,6 @@ public class WIP_Battle_mode : MonoBehaviour {
             if (Input.GetKeyUp(KeyCode.K))
             {
                 Debug.Log("enemy turn");
-                //todo calculate enemyCameraPosition here
                 mainCamera.GetComponent<Trapezoid_camera>().ChangeTarget(enemyCameraPosition, transform.position);
             }
         }

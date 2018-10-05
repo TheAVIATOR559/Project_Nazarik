@@ -610,7 +610,7 @@ MonoBehaviour:
   lineCameraVerticalOffset: 2
   backRowOffset: 1.5
   trapezoidCameraDistance: 8
-  trapezoidCameraVerticalOffset: 3
+  trapezoidCameraVerticalOffset: 2
 --- !u!4 &1921615596
 Transform:
   m_ObjectHideFlags: 0
