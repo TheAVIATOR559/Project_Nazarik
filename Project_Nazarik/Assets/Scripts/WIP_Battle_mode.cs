@@ -52,7 +52,7 @@ public class WIP_Battle_mode : MonoBehaviour {
             SpawnAllies(i, battleLayout);
         }
 
-        battlePosition = (enemiesSpawned[0].transform.position - player.transform.position) / 2;
+        battlePosition = ((enemiesSpawned[0].transform.position - player.transform.position) / 2) + (player.transform.right * (0.5f * enemySpacing));
         battlePosition = player.transform.position + battlePosition;
         transform.position = battlePosition;
         transform.rotation = Quaternion.LookRotation(player.transform.forward);
@@ -70,17 +70,11 @@ public class WIP_Battle_mode : MonoBehaviour {
         }
         if(battleLayout == BattleLayout.Trapezoid)
         {
-            //battleCameraPosition = transform.position;
-            //battleCameraPosition = battleCameraPosition + (transform.right * (0.5f * enemySpacing));
-            battleCameraPosition = (player.transform.position + alliesSpawned[0].transform.position) / 2;
-            battleCameraPosition = transform.position + battleCameraPosition;
+            battleCameraPosition = transform.position - (transform.forward * trapezoidCameraDistance);
             battleCameraPosition.y += trapezoidCameraVerticalOffset;
-            battleCameraPosition = battleCameraPosition - (transform.forward * trapezoidCameraDistance);
 
-            //todo calculate enemyCameraPosition here
-            enemyCameraPosition = enemyCameraPosition + ((enemiesSpawned[0].transform.position + enemiesSpawned[1].transform.position) / 2);
-            battleCameraPosition.y += trapezoidCameraVerticalOffset;
-            battleCameraPosition = battleCameraPosition + (transform.forward * trapezoidCameraDistance);
+            enemyCameraPosition = transform.position + (transform.forward * trapezoidCameraDistance);
+            enemyCameraPosition.y += trapezoidCameraVerticalOffset;
 
             mainCamera.GetComponent<Trapezoid_camera>().enabled = true;
             mainCamera.GetComponent<Trapezoid_camera>().ChangeTarget(battleCameraPosition, transform.position);
@@ -172,6 +166,7 @@ public class WIP_Battle_mode : MonoBehaviour {
             }
             if(loopCount == 2)
             {
+                //todo this might be offsetting this ally by too much. Not sure need to test
                 allySpawnPosition = player.transform.position + (player.transform.right * (enemySpacing * 1.5f)) - (player.transform.forward * backRowOffset);
             }
             if(loopCount == 3)
@@ -219,6 +214,7 @@ public class WIP_Battle_mode : MonoBehaviour {
             }
             else if (loopCount == 3)
             {
+                //todo this might be offsetting this enemy by too much. Not sure need to test
                 enemySpawnPosition = enemiesSpawned[0].transform.position - (enemiesSpawned[0].transform.right * (1.5f * enemySpacing)) - (enemiesSpawned[0].transform.forward * backRowOffset);
             }
             else if (loopCount == 4)
