@@ -9,6 +9,8 @@ public class Trapezoid_camera : MonoBehaviour {
     private Vector3 m_desiredPosition;
     private Quaternion m_targetRotation;
     private Vector3 m_targetPosition;
+    private Vector3 m_finalPosition;
+    private Vector3 m_midPoint;
 	
 	// Update is called once per frame
 	void LateUpdate () {
@@ -23,5 +25,11 @@ public class Trapezoid_camera : MonoBehaviour {
     {
         m_desiredPosition = desiredPosition;
         m_targetPosition = targetPosition;
+    }
+
+    public void ChangeBattlePosition(Vector3 midPoint, Vector3 finalPosition)
+    {
+        m_midPoint = midPoint;
+        m_finalPosition = finalPosition;
     }
 }
