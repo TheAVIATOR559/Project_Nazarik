@@ -139,13 +139,13 @@ public class WIP_Battle_mode : MonoBehaviour {
             if (Input.GetKeyUp(KeyCode.J))
             {
                 Debug.Log("player turn");
-                mainCamera.GetComponent<Trapezoid_camera>().ChangeBattlePosition();
+                mainCamera.GetComponent<Trapezoid_camera>().ChangeTarget(battleCameraPosition, transform.position);
             }
 
             if (Input.GetKeyUp(KeyCode.K))
             {
                 Debug.Log("enemy turn");
-                mainCamera.GetComponent<Trapezoid_camera>().ChangeBattlePosition();
+                mainCamera.GetComponent<Trapezoid_camera>().ChangeTarget(enemyCameraPosition, transform.position);
             }
         }
     }

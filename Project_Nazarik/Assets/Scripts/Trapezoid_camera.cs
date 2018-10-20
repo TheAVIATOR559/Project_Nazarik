@@ -29,6 +29,8 @@ public class Trapezoid_camera : MonoBehaviour {
 
     public void ChangeBattlePosition(Vector3 midPoint, Vector3 finalPosition)
     {
+        //somehow moves that camera to a midpoint roughly 2 above the battleController and then move it to the final position
+        //I have no idea how to do this
         m_midPoint = midPoint;
         m_finalPosition = finalPosition;
     }
