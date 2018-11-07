@@ -19,6 +19,13 @@ public class Trapezoid_camera : MonoBehaviour {
 
         m_targetRotation = Quaternion.LookRotation(m_targetPosition - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, m_targetRotation, Time.deltaTime * damping);
+
+        //if statement controlling if the camera is within an amount of the transit point and then set m_desiredPosition
+        //need to set m_desiredposition to m_midpoint
+        if(Vector3.Distance(transform.position, m_midPoint) <= 1)
+        {
+            m_desiredPosition = m_finalPosition;
+        }
 	}
 
     public void ChangeTarget(Vector3 desiredPosition, Vector3 targetPosition)
