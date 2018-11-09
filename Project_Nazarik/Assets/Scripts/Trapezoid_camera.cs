@@ -20,12 +20,12 @@ public class Trapezoid_camera : MonoBehaviour {
         m_targetRotation = Quaternion.LookRotation(m_targetPosition - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, m_targetRotation, Time.deltaTime * damping);
 
-        //if statement controlling if the camera is within an amount of the transit point and then set m_desiredPosition
-        //need to set m_desiredposition to m_midpoint
-        if(Vector3.Distance(transform.position, m_midPoint) <= 1)
-        {
-            m_desiredPosition = m_finalPosition;
-        }
+        //if(Vector3.Distance(transform.position, m_midPoint) <= 2)
+        //{
+        //    Debug.Log("finalPosition: " + m_finalPosition);
+        //    m_desiredPosition = m_finalPosition;
+        //    Debug.Log("desiredPosition: " + m_desiredPosition);
+        //}
 	}
 
     public void ChangeTarget(Vector3 desiredPosition, Vector3 targetPosition)
@@ -34,11 +34,11 @@ public class Trapezoid_camera : MonoBehaviour {
         m_targetPosition = targetPosition;
     }
 
-    public void ChangeBattlePosition(Vector3 midPoint, Vector3 finalPosition)
-    {
-        //somehow moves that camera to a midpoint roughly 2 above the battleController and then move it to the final position
-        //I have no idea how to do this
-        m_midPoint = midPoint;
-        m_finalPosition = finalPosition;
-    }
+    ///I might want to try and repurpose this code
+    //public void ChangeBattlePosition(Vector3 midPoint, Vector3 finalPosition)
+    //{
+    //    m_midPoint = midPoint;
+    //    m_finalPosition = finalPosition;
+    //    m_desiredPosition = midPoint;
+    //}
 }

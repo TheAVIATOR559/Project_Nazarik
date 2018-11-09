@@ -8,13 +8,13 @@ public class WIP_Battle_mode : MonoBehaviour {
     [SerializeField] GameObject player;
     [SerializeField] GameObject[] alliesList;
     [SerializeField] Camera mainCamera;
-    [SerializeField] float enemyOffset = 0;
-    [SerializeField] float enemySpacing = 0;
-    [SerializeField] float lineCameraDistance = 0;
-    [SerializeField] float lineCameraVerticalOffset = 0;
-    [SerializeField] float backRowOffset = 0;
-    [SerializeField] float trapezoidCameraDistance = 0;
-    [SerializeField] float trapezoidCameraVerticalOffset = 0;
+    [SerializeField] float enemyOffset = 5;
+    [SerializeField] float enemySpacing = 2;
+    [SerializeField] float lineCameraDistance = 12;
+    [SerializeField] float lineCameraVerticalOffset = 2;
+    [SerializeField] float backRowOffset = 1.5f;
+    [SerializeField] float trapezoidCameraDistance = 8;
+    [SerializeField] float trapezoidCameraVerticalOffset = 2;
 
     private Vector3 enemySpawnPosition;
     private GameObject[] enemiesSpawned = new GameObject[4];
@@ -47,7 +47,9 @@ public class WIP_Battle_mode : MonoBehaviour {
         enemyCount = /*Random.Range(1, 4)*/ 4;
         player.GetComponent<Player_Movement>().enabled = false;
         player.GetComponent<Rigidbody>().freezeRotation = true;
-        for(int i = 1; i <= enemyCount; i++)
+
+        //todo maybe design new layout for trapezoid
+        for (int i = 1; i <= enemyCount; i++)
         {
             SpawnEnemies(i, battleLayout);
             SpawnAllies(i, battleLayout);
@@ -69,6 +71,8 @@ public class WIP_Battle_mode : MonoBehaviour {
             mainCamera.GetComponent<Dungeon_Crawler>().enabled = true;
             mainCamera.GetComponent<Dungeon_Crawler>().OnBattleStart(battleCameraPosition);
         }
+
+        //todo if new layout for trapezoid, will need new camera positions
         if(battleLayout == BattleLayout.Trapezoid)
         {
             battleCameraPosition = transform.position - (transform.forward * trapezoidCameraDistance);
@@ -76,9 +80,6 @@ public class WIP_Battle_mode : MonoBehaviour {
 
             enemyCameraPosition = transform.position + (transform.forward * trapezoidCameraDistance);
             enemyCameraPosition.y += trapezoidCameraVerticalOffset;
-
-            trapezoidCameraTransitionPoint = transform.position;
-            trapezoidCameraTransitionPoint.y += 4;
 
             mainCamera.GetComponent<Trapezoid_camera>().enabled = true;
             mainCamera.GetComponent<Trapezoid_camera>().ChangeTarget(battleCameraPosition, transform.position);
@@ -136,16 +137,17 @@ public class WIP_Battle_mode : MonoBehaviour {
         //todo change this to be an event flag for the start of the enemy turn or the end of the player turn
         if (battleLayout == BattleLayout.Trapezoid)
         {
+            //todo figure out new combat and turn transition styles
             if (Input.GetKeyUp(KeyCode.J))
             {
                 Debug.Log("player turn");
-                mainCamera.GetComponent<Trapezoid_camera>().ChangeBattlePosition(battleCameraPosition, transform.position);
+                mainCamera.GetComponent<Trapezoid_camera>().ChangeTarget(battleCameraPosition, transform.position);
             }
 
             if (Input.GetKeyUp(KeyCode.K))
             {
                 Debug.Log("enemy turn");
-                mainCamera.GetComponent<Trapezoid_camera>().ChangeBattlePosition(enemyCameraPosition, transform.position);
+                mainCamera.GetComponent<Trapezoid_camera>().ChangeTarget(enemyCameraPosition, transform.position);
             }
         }
     }
