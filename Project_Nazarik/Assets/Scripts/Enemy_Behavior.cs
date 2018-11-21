@@ -76,7 +76,7 @@ public class Enemy_Behavior : MonoBehaviour {
     {
         if(collision.gameObject.tag == "Player")
         {
-            battleController.GetComponent<WIP_Battle_mode>().enabled = true;
+            battleController.GetComponent<BattleController>().enabled = true;
             Destroy(this.gameObject);
         }
     }

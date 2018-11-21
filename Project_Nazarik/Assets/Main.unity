@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -185,9 +185,8 @@ GameObject:
   - component: {fileID: 193692749}
   - component: {fileID: 193692748}
   - component: {fileID: 193692747}
-  - component: {fileID: 193692750}
   - component: {fileID: 193692752}
-  - component: {fileID: 193692751}
+  - component: {fileID: 193692750}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -263,20 +262,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 193692746}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21059ddfcb4b754a887644609f804d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_target: {fileID: 372314320}
-  damping: 1
---- !u!114 &193692751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 193692746}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bad7681565c19049aa1adbd9ecedaf3, type: 3}
+  m_Script: {fileID: 11500000, guid: 13aa9028b1ef61844bc46cf9e174affb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damping: 1
@@ -590,7 +576,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1921615594}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b16eb55b8277149479e5e22fbf4d3eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: d635cd1ef25fb8b488e95c84fafc08be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemiesList:
@@ -604,13 +590,10 @@ MonoBehaviour:
   - {fileID: 1603933238984932, guid: 608ede2ff7b1dc748a74909b94e00b4a, type: 2}
   - {fileID: 1800296236300626, guid: 288194c8c99d0d341862c7a04ad080ca, type: 2}
   mainCamera: {fileID: 193692748}
-  enemyOffset: 5
-  enemySpacing: 2
-  lineCameraDistance: 12
-  lineCameraVerticalOffset: 2
-  backRowOffset: 1.5
-  trapezoidCameraDistance: 8
-  trapezoidCameraVerticalOffset: 2
+  enemyOffset: 10
+  characterSpacing: 2
+  cameraHorizontalDistance: 5
+  cameraVerticalDistance: 3
 --- !u!4 &1921615596
 Transform:
   m_ObjectHideFlags: 0
