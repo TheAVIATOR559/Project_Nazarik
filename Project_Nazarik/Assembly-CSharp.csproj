@@ -55,10 +55,13 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\BattleController.cs" />
      <Compile Include="Assets\Scripts\Camera_Battle.cs" />
+     <Compile Include="Assets\Scripts\Character.cs" />
+     <Compile Include="Assets\Scripts\CharacterStat.cs" />
      <Compile Include="Assets\Scripts\Enemy_Behavior.cs" />
      <Compile Include="Assets\Scripts\Mouse_Aim.cs" />
      <Compile Include="Assets\Scripts\Player_Movement.cs" />
      <Compile Include="Assets\Scripts\Roaming_Sphere_Trigger.cs" />
+     <Compile Include="Assets\Scripts\StatModifier.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/Jacob Howell/Documents/GitHub/Project_Nazarik/Project_Nazarik/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
