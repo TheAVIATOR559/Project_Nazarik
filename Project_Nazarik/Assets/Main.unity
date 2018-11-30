@@ -308,8 +308,27 @@ MonoBehaviour:
     BaseValue: 10
   Constitution:
     BaseValue: 10
-  NAME:
+  Knowledge:
     BaseValue: 10
+  Luck:
+    BaseValue: 10
+  characterLevel: 10
+  iniativeBalance:
+  - 0.8
+  - 0.2
+  dodgeBalance:
+  - 0.65
+  - 0.35
+  baseMana: 100
+  baseHealth: 100
+  PDMBalance:
+  - 0.8
+  - 0.2
+  MDMBalance:
+  - 0.8
+  - 0.2
+  critBalance: 2
+  ailmentBalance: 5
 --- !u!1 &1506306524
 GameObject:
   m_ObjectHideFlags: 0

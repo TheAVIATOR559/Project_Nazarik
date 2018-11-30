@@ -91,6 +91,11 @@ public class BattleController : MonoBehaviour {
             mainCamera.GetComponent<Camera_Battle>().SetTargetPosition(cameraTargetPosition[0]);
         }
 
+        if (Input.GetKeyUp(KeyCode.T))
+        {
+            Debug.Log(player.GetComponent<Character>().GetStats());
+        }
+
         //TODO handle changing turns and battle flow here
 
     }
