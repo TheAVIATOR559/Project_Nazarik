@@ -313,6 +313,8 @@ MonoBehaviour:
   Luck:
     BaseValue: 10
   characterLevel: 10
+  basePhysicalDamage: 100
+  PWT: 0
   iniativeBalance:
   - 0.8
   - 0.2
@@ -324,6 +326,9 @@ MonoBehaviour:
   PDMBalance:
   - 0.8
   - 0.2
+  baseMagicDamage: 100
+  knowBalance: 0.8
+  MWT: 200
   MDMBalance:
   - 0.8
   - 0.2
