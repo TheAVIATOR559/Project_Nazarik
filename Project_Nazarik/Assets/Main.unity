@@ -301,18 +301,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Strength:
-    BaseValue: 10
+    BaseValue: 20
   Dexterity:
-    BaseValue: 10
+    BaseValue: 20
   Intelligence:
-    BaseValue: 10
+    BaseValue: 20
   Constitution:
-    BaseValue: 10
+    BaseValue: 20
   Knowledge:
-    BaseValue: 10
+    BaseValue: 20
   Luck:
-    BaseValue: 10
-  characterLevel: 10
+    BaseValue: 20
+  characterLevel: 50
   basePhysicalDamage: 100
   PWT: 0
   iniativeBalance:
@@ -333,7 +333,7 @@ MonoBehaviour:
   - 0.8
   - 0.2
   critBalance: 2
-  ailmentBalance: 5
+  ailmentBalance: 2
 --- !u!1 &1506306524
 GameObject:
   m_ObjectHideFlags: 0

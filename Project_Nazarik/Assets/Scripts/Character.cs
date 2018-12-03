@@ -17,13 +17,15 @@ public class Character : MonoBehaviour {
 
     ///CORE STATS
     //TODO better way to declare these???
-    //TODO need an upper bound for non-augmented(raw) stat. 10? 20? larger?
+    //Lower bound is 0 upper bound is 20
     [SerializeField] CharacterStat Strength = new CharacterStat(0); //physical damage
     [SerializeField] CharacterStat Dexterity = new CharacterStat(0); //turn order, dodge chance
     [SerializeField] CharacterStat Intelligence = new CharacterStat(0); //mana
     [SerializeField] CharacterStat Constitution = new CharacterStat(0); //health, physical damage mitigation
     [SerializeField] CharacterStat Knowledge = new CharacterStat(0); //magic damage, magic damage mitigation
     [SerializeField] CharacterStat Luck = new CharacterStat(0); //crit chance, status ailment chance
+
+    //upper bound is 50
     [SerializeField] int characterLevel = 0; //level of character
 
     ///DERIVED STATS
@@ -49,13 +51,15 @@ public class Character : MonoBehaviour {
         switch (PWT)
         {
             case PhysicalWeaponType.meleeLight:
-                physicalDamageBalance[0] = 0.8f; //DEX
-                physicalDamageBalance[1] = 0.2f; //STR
+                physicalDamageBalance[0] = 0.6f; //DEX
+                physicalDamageBalance[1] = 0.1f; //STR
 
                 temp = basePhysicalDamage * (Dexterity.Value + characterLevel);
+                temp = temp / 100;
                 //add flat mods here
                 //add percent mods here
-                temp = temp + (Dexterity.Value * physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]);
+                temp = temp * ((Dexterity.Value * physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]));
+                temp = Mathf.Round(temp);
                 PhysicalDamage.BaseValue = temp;
 
                 return PhysicalDamage.Value;
@@ -65,44 +69,52 @@ public class Character : MonoBehaviour {
                 physicalDamageBalance[1] = 0.65f; //STR
 
                 temp = basePhysicalDamage * (Strength.Value + characterLevel);
+                temp = temp / 100;
                 //add flat mods here
                 //add percent mods here
-                temp = temp + (Dexterity.Value * physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]);
+                temp = temp * ((Dexterity.Value * physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]));
+                temp = Mathf.Round(temp);
                 PhysicalDamage.BaseValue = temp;
 
                 return PhysicalDamage.Value;
 
             case PhysicalWeaponType.meleeHeavy:
-                physicalDamageBalance[0] = 0.2f; //DEX
-                physicalDamageBalance[1] = 0.8f; //STR
+                physicalDamageBalance[0] = 0.35f; //DEX
+                physicalDamageBalance[1] = 1.50f; //STR
 
                 temp = basePhysicalDamage * (Strength.Value + characterLevel);
+                temp = temp / 100;
                 //add flat mods here
                 //add percent mods here
-                temp = temp + (Dexterity.Value * physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]);
+                temp = temp * ((Dexterity.Value * physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]));
+                temp = Mathf.Round(temp);
                 PhysicalDamage.BaseValue = temp;
 
                 return PhysicalDamage.Value;
 
             case PhysicalWeaponType.rangedLight:
-                physicalDamageBalance[0] = 0.8f; //DEX
+                physicalDamageBalance[0] = 1.0f; //DEX
 
                 temp = basePhysicalDamage * (Dexterity.Value + characterLevel);
+                temp = temp / 100;
                 //add flat mods here
                 //add percent mods here
-                temp = temp + (Dexterity.Value * physicalDamageBalance[0]);
+                temp = temp * ((Dexterity.Value * physicalDamageBalance[0]));
+                temp = Mathf.Round(temp);
                 PhysicalDamage.BaseValue = temp;
 
                 return PhysicalDamage.Value;
 
             case PhysicalWeaponType.rangedHeavy:
-                physicalDamageBalance[0] = 0.2f; //DEX
-                physicalDamageBalance[1] = 0.8f; //STR
+                physicalDamageBalance[0] = 0.85f; //DEX
+                physicalDamageBalance[1] = 1.0f; //STR
 
                 temp = basePhysicalDamage * (Dexterity.Value + characterLevel);
+                temp = temp / 100;
                 //add flat mods here
                 //add percent mods here
-                temp = temp + (Dexterity.Value * physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]);
+                temp = temp * ((Dexterity.Value * physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]));
+                temp = Mathf.Round(temp);
                 PhysicalDamage.BaseValue = temp;
 
                 return PhysicalDamage.Value;
@@ -140,6 +152,7 @@ public class Character : MonoBehaviour {
     #endregion
 
     #region Mana
+    //TODO need to mess with this to boost the number higher
     [SerializeField] float baseMana = 100;
     protected CharacterStat Mana = new CharacterStat();
     public float GetMana()
@@ -152,6 +165,7 @@ public class Character : MonoBehaviour {
     #endregion
 
     #region Health 
+    //TODO need to mess with this to boost the number higher
     [SerializeField] float baseHealth = 100;
     protected CharacterStat Health = new CharacterStat();
 
@@ -165,12 +179,13 @@ public class Character : MonoBehaviour {
     #endregion
 
     #region Physicial Damage Mitigation
+    //TODO muck with this so it produces the number of damage ignored
     protected CharacterStat physDamMit = new CharacterStat();
     [SerializeField] float[] PDMBalance = new float[2] { 0.8f, 0.2f };
 
     public float GetPhysicalDamageMitigation()
     {
-        physDamMit.BaseValue = Constitution.Value + (Constitution.Value * PDMBalance[0]) + (Strength.Value * PDMBalance[1]);
+        physDamMit.BaseValue = Constitution.Value * ((Constitution.Value * PDMBalance[0]) + (Strength.Value * PDMBalance[1]));
         //add percent mods here
 
         return physDamMit.Value;
@@ -178,6 +193,7 @@ public class Character : MonoBehaviour {
     #endregion
 
     #region Magic Damage
+    //TODO I dont like that this is higher than meleeMedium. It should be similar to or lower than meleeMedium
     [SerializeField] float baseMagicDamage = 0;
     [SerializeField] float knowBalance = 0;
 
@@ -193,11 +209,13 @@ public class Character : MonoBehaviour {
     public float GetMagicDamage()
     {
         float temp = baseMagicDamage * ((Knowledge.Value + Intelligence.Value) / ((float)MWT / 100) + characterLevel);
+        temp = temp / 100;
         //add flat mods here
         //add precent mods here
 
         //weapon class damage modifier
-        temp = temp + (Knowledge.Value * knowBalance) + Intelligence.Value;
+        temp = temp * ((Knowledge.Value * knowBalance) + Intelligence.Value);
+        temp = Mathf.Round(temp);
         magicDamage.BaseValue = temp;
 
         return magicDamage.Value;
@@ -205,15 +223,16 @@ public class Character : MonoBehaviour {
     #endregion
 
     #region Magic Damage Mitigation
-    protected CharacterStat MDM = new CharacterStat();
+    //TODO muck with this so it produces the number of damage ignored
+    protected CharacterStat magDamMit = new CharacterStat();
     [SerializeField] float[] MDMBalance = new float[2] { 0.8f, 0.2f };
 
     public float GetMagicDamageMitigation()
     {
-        MDM.BaseValue = Knowledge.Value + (Knowledge.Value * MDMBalance[0]) + (Intelligence.Value * MDMBalance[1]);
+        magDamMit.BaseValue = Knowledge.Value * ((Knowledge.Value * MDMBalance[0]) + (Intelligence.Value * MDMBalance[1]));
         //add percent mods here
 
-        return MDM.Value;
+        return magDamMit.Value;
     }
     #endregion
 
@@ -249,8 +268,9 @@ public class Character : MonoBehaviour {
     //TESTING STUFF
     public string GetStats()
     {
-        string stats = "Physical Damage: " + this.GetPhysicalDamage();
-
+        string stats = "Physical Damage: " + this.GetPhysicalDamage() + "\nMagic Damage: " + this.GetMagicDamage() + "\nPhysical Damage Mitigation: " + this.GetPhysicalDamageMitigation() +
+             "\nMagic Damage Mitigation: " + this.GetMagicDamageMitigation() + "\nHealth: " + this.GetHealth() + "\nMana: " + this.GetMana() + "\nIniative: " + this.GetIniative() +
+             "\nCrit Chance: " + this.GetCritChance() + "\nStatus Ailment Chance: " + this.GetStatusAilmentChance() + "\nDodge Chance: " + this.GetDodgeChance();
         return stats;
     }
 }
