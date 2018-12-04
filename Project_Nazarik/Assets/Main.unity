@@ -313,6 +313,7 @@ MonoBehaviour:
   Luck:
     BaseValue: 20
   characterLevel: 50
+  defendingBoost: 50
   basePhysicalDamage: 100
   PWT: 0
   iniativeBalance:
@@ -323,13 +324,13 @@ MonoBehaviour:
   - 0.35
   baseMana: 100
   baseHealth: 100
-  PDMBalance:
+  physicalDefenseBalance:
   - 0.8
   - 0.2
   baseMagicDamage: 100
   knowBalance: 0.8
   MWT: 200
-  MDMBalance:
+  magicDefenseBalance:
   - 0.8
   - 0.2
   critBalance: 2
