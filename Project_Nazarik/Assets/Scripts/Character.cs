@@ -5,23 +5,27 @@ using UnityEngine;
 public class Character : MonoBehaviour {
 
 
-    private enum Presets //change these to the actual character classes once figured out
+    private enum PresetClasses //change these to the actual character classes once figured out
     {
-        Tank,
-        DPS,
-        Healer,
-        Rogue,
-        Mage,
-        Ranger,
+        Tank, //STR: 20 | DEX: 08 | CON: 20 | INT: 01 | KNOW: 01 | LUCK: 03 | LVL: 50
+        Fighter, //STR: 20 | DEX: 15 | CON: 15 | INT: 01 | KNOW: 01 | LUCK: 01 | LVL: 50
+        Healer, //STR: 01 | DEX: 01 | CON: 05 | INT: 20 | KNOW: 20 | LUCK: 06 | LVL: 50
+        Rogue, //STR: 15 | DEX: 20 | CON: 05 | INT: 01 | KNOW: 01 | LUCK: 10 | LVL: 50
+        Mage, //STR: 01 | DEX: 01 | CON: 08 | INT: 20 | KNOW: 20 | LUCK: 03 | LVL: 50
+        Ranger, //STR: 15 | DEX: 20 | CON: 10 | INT: 01 | KNOW: 01 | LUCK: 05 | LVL: 50
+        MinStats, //STR: 01 | DEX: 01 | CON: 01 | INT: 01 | KNOW: 01 | LUCK: 01 | LVL: 01
+        MaxStats, //STR: 20 | DEX: 20 | CON: 20 | INT: 20 | KNOW: 20 | LUCK: 20 | LVL: 50
     }
+
+    [SerializeField] PresetClasses characterClass = PresetClasses.MinStats;
 
     ///CORE STATS
     //TODO better way to declare these???
     //Lower bound is 0 upper bound is 20
     [SerializeField] CharacterStat Strength = new CharacterStat(0); //physical damage
     [SerializeField] CharacterStat Dexterity = new CharacterStat(0); //turn order, dodge chance
-    [SerializeField] CharacterStat Intelligence = new CharacterStat(0); //mana
     [SerializeField] CharacterStat Constitution = new CharacterStat(0); //health, physical damage mitigation
+    [SerializeField] CharacterStat Intelligence = new CharacterStat(0); //mana
     [SerializeField] CharacterStat Knowledge = new CharacterStat(0); //magic damage, magic damage mitigation
     [SerializeField] CharacterStat Luck = new CharacterStat(0); //crit chance, status ailment chance
 
@@ -56,7 +60,7 @@ public class Character : MonoBehaviour {
                 physicalDamageBalance[1] = 0.2f; //STR
 
                 temp = basePhysicalDamage * (Dexterity.Value + characterLevel);
-                temp = temp / 100;
+                temp = temp / characterLevel;
                 //add flat mods here
                 //add percent mods here
                 temp = temp * ((Dexterity.Value* physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]));
@@ -70,7 +74,7 @@ public class Character : MonoBehaviour {
                 physicalDamageBalance[1] = 0.65f; //STR
 
                 temp = basePhysicalDamage * (Strength.Value + characterLevel);
-                temp = temp / 100;
+                temp = temp / characterLevel;
                 //add flat mods here
                 //add percent mods here
                 temp = temp * ((Dexterity.Value * physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]));
@@ -84,7 +88,7 @@ public class Character : MonoBehaviour {
                 physicalDamageBalance[1] = 1.50f; //STR
 
                 temp = basePhysicalDamage * (Strength.Value + characterLevel);
-                temp = temp / 100;
+                temp = temp / characterLevel;
                 //add flat mods here
                 //add percent mods here
                 temp = temp * ((Dexterity.Value * physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]));
@@ -97,7 +101,7 @@ public class Character : MonoBehaviour {
                 physicalDamageBalance[0] = 1.2f; //DEX
 
                 temp = basePhysicalDamage * (Dexterity.Value + characterLevel);
-                temp = temp / 100;
+                temp = temp / characterLevel;
                 //add flat mods here
                 //add percent mods here
                 temp = temp * ((Dexterity.Value * physicalDamageBalance[0]));
@@ -111,7 +115,7 @@ public class Character : MonoBehaviour {
                 physicalDamageBalance[1] = 1.50f; //STR
 
                 temp = basePhysicalDamage * (Dexterity.Value + characterLevel);
-                temp = temp / 100;
+                temp = temp / characterLevel;
                 //add flat mods here
                 //add percent mods here
                 temp = temp * ((Dexterity.Value * physicalDamageBalance[0]) + (Strength.Value * physicalDamageBalance[1]));
@@ -208,7 +212,7 @@ public class Character : MonoBehaviour {
     public float GetMagicDamage()
     {
         float temp = baseMagicDamage * ((Knowledge.Value + Intelligence.Value) / ((float)MWT / 100) + characterLevel);
-        temp = temp / 100;
+        temp = temp / characterLevel;
         //add flat mods here
         //add precent mods here
 
@@ -271,5 +275,94 @@ public class Character : MonoBehaviour {
              "\nMagic Defense: " + this.GetMagicDefense() + "\nHealth: " + this.GetHealth() + "\nMana: " + this.GetMana() + "\nIniative: " + this.GetIniative() +
              "\nCrit Chance: " + this.GetCritChance() + "\nStatus Ailment Chance: " + this.GetStatusAilmentChance() + "\nDodge Chance: " + this.GetDodgeChance();
         return stats;
+    }
+
+    //TODO FIND A BETTER WAY TO DO THIS
+    private PresetClasses previousClass = PresetClasses.MinStats;
+    private void Update()
+    {
+        if(characterClass != previousClass)
+        {
+            previousClass = characterClass;
+
+            switch (characterClass)
+            {
+                case PresetClasses.Tank: //STR: 20 | DEX: 08 | CON: 20 | INT: 01 | KNOW: 01 | LUCK: 03 | LVL: 50
+                    this.Strength.BaseValue = 20;
+                    this.Dexterity.BaseValue = 08;
+                    this.Constitution.BaseValue = 20;
+                    this.Intelligence.BaseValue = 01;
+                    this.Knowledge.BaseValue = 01;
+                    this.Luck.BaseValue = 03;
+                    this.characterLevel = 50;
+                    break;
+                case PresetClasses.Fighter: //STR: 20 | DEX: 15 | CON: 15 | INT: 01 | KNOW: 01 | LUCK: 01 | LVL: 50
+                    this.Strength.BaseValue = 20;
+                    this.Dexterity.BaseValue = 15;
+                    this.Constitution.BaseValue = 15;
+                    this.Intelligence.BaseValue = 01;
+                    this.Knowledge.BaseValue = 01;
+                    this.Luck.BaseValue = 01;
+                    this.characterLevel = 50;
+                    break;
+                case PresetClasses.Healer: //STR: 01 | DEX: 01 | CON: 05 | INT: 20 | KNOW: 20 | LUCK: 06 | LVL: 50
+                    this.Strength.BaseValue = 01;
+                    this.Dexterity.BaseValue = 01;
+                    this.Constitution.BaseValue = 05;
+                    this.Intelligence.BaseValue = 20;
+                    this.Knowledge.BaseValue = 20;
+                    this.Luck.BaseValue = 06;
+                    this.characterLevel = 50;
+                    break;
+                case PresetClasses.Mage: //STR: 01 | DEX: 01 | CON: 08 | INT: 20 | KNOW: 20 | LUCK: 03 | LVL: 50
+                    this.Strength.BaseValue = 01;
+                    this.Dexterity.BaseValue = 01;
+                    this.Constitution.BaseValue = 08;
+                    this.Intelligence.BaseValue = 20;
+                    this.Knowledge.BaseValue = 20;
+                    this.Luck.BaseValue = 03;
+                    this.characterLevel = 50;
+                    break;
+                case PresetClasses.Ranger: //STR: 15 | DEX: 20 | CON: 10 | INT: 01 | KNOW: 01 | LUCK: 05 | LVL: 50
+                    this.Strength.BaseValue = 15;
+                    this.Dexterity.BaseValue = 20;
+                    this.Constitution.BaseValue = 10;
+                    this.Intelligence.BaseValue = 01;
+                    this.Knowledge.BaseValue = 01;
+                    this.Luck.BaseValue = 05;
+                    this.characterLevel = 50;
+                    break;
+                case PresetClasses.Rogue: //STR: 15 | DEX: 20 | CON: 05 | INT: 01 | KNOW: 01 | LUCK: 10 | LVL: 50
+                    this.Strength.BaseValue = 15;
+                    this.Dexterity.BaseValue = 20;
+                    this.Constitution.BaseValue = 05;
+                    this.Intelligence.BaseValue = 01;
+                    this.Knowledge.BaseValue = 01;
+                    this.Luck.BaseValue = 10;
+                    this.characterLevel = 50;
+                    break;
+                case PresetClasses.MinStats:
+                    this.Strength.BaseValue = 01;
+                    this.Dexterity.BaseValue = 01;
+                    this.Constitution.BaseValue = 01;
+                    this.Intelligence.BaseValue = 01;
+                    this.Knowledge.BaseValue = 01;
+                    this.Luck.BaseValue = 01;
+                    this.characterLevel = 01;
+                    break;
+                case PresetClasses.MaxStats:
+                    this.Strength.BaseValue = 20;
+                    this.Dexterity.BaseValue = 20;
+                    this.Constitution.BaseValue = 20;
+                    this.Intelligence.BaseValue = 20;
+                    this.Knowledge.BaseValue = 20;
+                    this.Luck.BaseValue = 20;
+                    this.characterLevel = 50;
+                    break;
+                default:
+                    Debug.LogError("Weird Character Class Selection Error Encountered.");
+                    break;
+            }
+        }
     }
 }
