@@ -5,7 +5,7 @@ using UnityEngine;
 public class Character : MonoBehaviour {
 
 
-    private enum PresetClasses //change these to the actual character classes once figured out
+    private enum PresetClasses 
     {
         Tank, //STR: 20 | DEX: 08 | CON: 20 | INT: 01 | KNOW: 01 | LUCK: 03 | LVL: 50
         Fighter, //STR: 20 | DEX: 15 | CON: 15 | INT: 01 | KNOW: 01 | LUCK: 01 | LVL: 50
@@ -169,7 +169,6 @@ public class Character : MonoBehaviour {
     #endregion
 
     #region Health 
-    //TODO need to mess with this to boost the number higher
     [SerializeField] float baseHealth = 100;
     protected CharacterStat Health = new CharacterStat();
 
@@ -264,9 +263,6 @@ public class Character : MonoBehaviour {
         return AilmentChance.Value;
     }
     #endregion
-
-    //TODO some way to select a preset and set the stats to the corresponding amounts
-
 
     //TESTING STUFF
     public string GetStats()
