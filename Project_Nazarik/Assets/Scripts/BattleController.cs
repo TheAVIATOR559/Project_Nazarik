@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,23 +15,33 @@ public class BattleController : MonoBehaviour {
     [SerializeField] float cameraVerticalDistance = 1;
 
     private Vector3 enemySpawnPosition;
-    private GameObject[] enemiesSpawned = new GameObject[4];
     private Vector3 enemyDirection;
     private Vector3 battleCameraPosition;
     private int enemyCount;
     private Vector3 allySpawnPosition;
-    private GameObject[] alliesSpawned = new GameObject[3];
     private Vector3 allyDirection;
     private Vector3[] cameraTargetPosition = new Vector3[3]; //0 for left, 1 for center, 2 for right
+    private List<GameObject> characterList = new List<GameObject>();
+    
 
     private void OnEnable()
     {
-        enemyCount = /*Random.Range(1, 4)*/ 4;
+        enemyCount = UnityEngine.Random.Range(1, 5); //I kind of want to tweak this so 4 happens more often or at least it 'feels'random
         player.GetComponent<Player_Movement>().enabled = false;
         player.GetComponent<Rigidbody>().freezeRotation = true;
 
         SpawnEnemies(enemyCount);
         SpawnAllies(alliesList.Length);
+
+        characterList.Add(player);
+        foreach(GameObject obj in characterList)
+        {
+            obj.GetComponent<Character>().enabled = true;
+        }
+
+        ///FAIR WARNING I HAVE NO IDEA HOW THIS WORKS
+        ///I STOLE IT FROM THE SECOND ANSWER ON THIS STACKEXCHANGE POST: https://stackoverflow.com/questions/3309188/how-to-sort-a-listt-by-a-property-in-the-object
+        characterList.Sort((x, y) => y.GetComponent<Character>().Initiative.Value.CompareTo(x.GetComponent<Character>().Initiative.Value));        
 
         //move battleController into position
         //is there even a need to move the battleController?
@@ -57,11 +68,9 @@ public class BattleController : MonoBehaviour {
 
         if (Input.GetKeyUp(KeyCode.B))
         {
-            foreach (GameObject obj in enemiesSpawned)
-            {
-                Destroy(obj);
-            }
-            foreach (GameObject obj in alliesSpawned)
+            characterList.Remove(player);
+            player.GetComponent<Character>().enabled = false;
+            foreach(GameObject obj in characterList)
             {
                 Destroy(obj);
             }
@@ -91,13 +100,15 @@ public class BattleController : MonoBehaviour {
             mainCamera.GetComponent<Camera_Battle>().SetTargetPosition(cameraTargetPosition[0]);
         }
 
-        /*
+        
         if (Input.GetKeyUp(KeyCode.T)) //TODO remove me once done testing
         {
-            Debug.Log(player.GetComponent<Character>().GetStats());
+            foreach(GameObject obj in characterList)
+            {
+                Debug.Log(obj.name + "\n" + obj.GetComponent<Character>().GetStats());
+            }
         }
-        */
-
+        
         //TODO handle changing turns and battle flow here
 
     }
@@ -116,7 +127,8 @@ public class BattleController : MonoBehaviour {
             //TODO should be a more efficient way to get this info
             allySpawnPosition.y = 0.5f * alliesList[i].GetComponent<Renderer>().bounds.size.y;
 
-            alliesSpawned[i] = Instantiate(alliesList[i], allySpawnPosition, Quaternion.LookRotation(allyDirection));
+            //alliesSpawned[i] = Instantiate(alliesList[i], allySpawnPosition, Quaternion.LookRotation(allyDirection));
+            characterList.Add(Instantiate(alliesList[i], allySpawnPosition, Quaternion.LookRotation(allyDirection)));
         }
 
     }
@@ -129,7 +141,7 @@ public class BattleController : MonoBehaviour {
         enemyDirection = player.transform.forward * -1;
         for(int i = 0; i <= m_enemyCount; i++)
         {
-            enemyNumber = Random.Range(0, enemiesList.Length);
+            enemyNumber = UnityEngine.Random.Range(0, enemiesList.Length);
 
             enemySpawnPosition = player.transform.position + (player.transform.forward * enemyOffset);
             enemySpawnPosition = enemySpawnPosition + (player.transform.right * (characterSpacing * i));
@@ -137,7 +149,8 @@ public class BattleController : MonoBehaviour {
             //TODO should be more efficient way to get this
             enemySpawnPosition.y = 0.5f * enemiesList[enemyNumber].GetComponent<Renderer>().bounds.size.y;
 
-            enemiesSpawned[i] = Instantiate(enemiesList[enemyNumber], enemySpawnPosition, Quaternion.LookRotation(enemyDirection));
+            //enemiesSpawned[i] = Instantiate(enemiesList[enemyNumber], enemySpawnPosition, Quaternion.LookRotation(enemyDirection));
+            characterList.Add(Instantiate(enemiesList[enemyNumber], enemySpawnPosition, Quaternion.LookRotation(enemyDirection)));
         }
 
     }

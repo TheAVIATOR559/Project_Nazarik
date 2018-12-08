@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33296101673970850}
   - component: {fileID: 23703718187859878}
   - component: {fileID: 135285295169706486}
+  - component: {fileID: 114089185282358548}
   m_Layer: 0
   m_Name: Enemy_Bravo
   m_TagString: Untagged
@@ -84,6 +85,53 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1187942133276164}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114089185282358548
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1187942133276164}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29ee6cf9e7fd5e44396c8e6106d48f76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterClass: 1
+  PWT: 0
+  MWT: 200
+  Strength:
+    BaseValue: 1
+  Dexterity:
+    BaseValue: 1
+  Constitution:
+    BaseValue: 1
+  Intelligence:
+    BaseValue: 1
+  Knowledge:
+    BaseValue: 1
+  Luck:
+    BaseValue: 1
+  characterLevel: 1
+  defendingBoost: 50
+  initiativeBalance:
+  - 0.8
+  - 0.2
+  dodgeBalance:
+  - 0.65
+  - 0.35
+  baseMana: 100
+  baseHealth: 100
+  physicalDefenseBalance:
+  - 0.8
+  - 0.2
+  magicDefenseBalance:
+  - 0.8
+  - 0.2
+  critBalance: 2
+  ailmentBalance: 2
+  basePhysicalDamage: 100
+  baseMagicDamage: 100
+  knowBalance: 0.8
 --- !u!135 &135285295169706486
 SphereCollider:
   m_ObjectHideFlags: 1

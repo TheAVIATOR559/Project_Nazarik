@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33525932619357178}
   - component: {fileID: 23430435169795266}
   - component: {fileID: 65297646313159496}
+  - component: {fileID: 114971907463841342}
   m_Layer: 0
   m_Name: Enemy_Battle
   m_TagString: Untagged
@@ -96,3 +97,50 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114971907463841342
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1876798665757450}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29ee6cf9e7fd5e44396c8e6106d48f76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterClass: 0
+  PWT: 0
+  MWT: 200
+  Strength:
+    BaseValue: 1
+  Dexterity:
+    BaseValue: 1
+  Constitution:
+    BaseValue: 1
+  Intelligence:
+    BaseValue: 1
+  Knowledge:
+    BaseValue: 1
+  Luck:
+    BaseValue: 1
+  characterLevel: 1
+  defendingBoost: 50
+  initiativeBalance:
+  - 0.8
+  - 0.2
+  dodgeBalance:
+  - 0.65
+  - 0.35
+  baseMana: 100
+  baseHealth: 100
+  physicalDefenseBalance:
+  - 0.8
+  - 0.2
+  magicDefenseBalance:
+  - 0.8
+  - 0.2
+  critBalance: 2
+  ailmentBalance: 2
+  basePhysicalDamage: 100
+  baseMagicDamage: 100
+  knowBalance: 0.8
