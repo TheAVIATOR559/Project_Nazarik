@@ -30,12 +30,27 @@ public class Character : MonoBehaviour {
         Light = 200,
         Heavy = 125
     }
+    private enum WeaponType
+    {
+        Physical,
+        Magical
+    }
 
     [SerializeField] PresetClasses characterClass = PresetClasses.MinStats;
+    [SerializeField] WeaponType weaponType = WeaponType.Physical;
     [SerializeField] PhysicalWeaponType PWT = PhysicalWeaponType.meleeLight;
     [SerializeField] MagicWeaponType MWT = MagicWeaponType.Light;
+    private bool m_isDefending = false;
 
-    ///CORE STATS
+    public bool isDefending
+    {
+        get
+        {
+            return m_isDefending;
+        }
+    }
+
+    #region CORE STATS
     //TODO better way to declare these???
     //Lower bound is 1 upper bound is 20
     [SerializeField] CharacterStat Strength = new CharacterStat(1); //physical damage
@@ -44,19 +59,44 @@ public class Character : MonoBehaviour {
     [SerializeField] CharacterStat Intelligence = new CharacterStat(1); //mana
     [SerializeField] CharacterStat Knowledge = new CharacterStat(1); //magic damage, magic damage mitigation
     [SerializeField] CharacterStat Luck = new CharacterStat(1); //crit chance, status ailment chance
-
     [SerializeField] int characterLevel = 1; //level of character. upper bound is 50
-    [SerializeField] float defendingBoost = 50; //how much the character's defense is boosted by when defending
+    #endregion
 
-    /// DERIVED STATS
+    #region DERIVED STATS
     public readonly CharacterStat Initiative = new CharacterStat();
     [SerializeField] float[] initiativeBalance = new float[2] { 0.8f, 0.2f }; //0 for dex, 1 for luck
     public readonly CharacterStat DodgeChance = new CharacterStat();
     [SerializeField] float[] dodgeBalance = new float[2] { 0.65f, 0.35f }; //0 for dex, 1 for luck
-    public readonly CharacterStat Mana = new CharacterStat();
+
+    private float m_Mana = 0;
     [SerializeField] float baseMana = 100;
-    public readonly CharacterStat Health = new CharacterStat();
-    [SerializeField] float baseHealth = 100;
+    public float Mana
+    {
+        get
+        {
+            return m_Mana;
+        }
+        set
+        {
+            m_Mana = m_Mana - value;
+        }
+    }
+
+    private float m_Health;
+    [SerializeField] int baseHealth = 100;
+    public float Health
+    {
+        get
+        {
+            return m_Health;
+        }
+        set
+        {
+            m_Health = m_Health - value;
+        }
+    }
+
+    [SerializeField] float defendingBoost = 50; //how much the character's defense is boosted by when defending
     public readonly CharacterStat PhysicalDefense = new CharacterStat();
     [SerializeField] float[] physicalDefenseBalance = new float[2] { 0.8f, 0.2f };
     public readonly CharacterStat MagicDefense = new CharacterStat();
@@ -71,6 +111,7 @@ public class Character : MonoBehaviour {
     public readonly CharacterStat MagicDamage = new CharacterStat();
     [SerializeField] float baseMagicDamage = 100;
     [SerializeField] float knowBalance = 0.8f;
+    #endregion
 
     void Awake()
     {
@@ -159,8 +200,8 @@ public class Character : MonoBehaviour {
         //calc stats here
         Initiative.BaseValue = (Dexterity.Value * initiativeBalance[0]) + (Luck.Value * initiativeBalance[1]);
         DodgeChance.BaseValue = Dexterity.Value + (Dexterity.Value * dodgeBalance[0]) + (Luck.Value * dodgeBalance[1]);
-        Mana.BaseValue = ((baseMana + characterLevel) * Intelligence.Value) / 10;
-        Health.BaseValue = ((baseHealth + Constitution.Value) * characterLevel) * 2.5f;
+        m_Mana = ((baseMana + characterLevel) * Intelligence.Value) / 10;
+        m_Health = ((baseHealth + Constitution.Value) * characterLevel) * 2.5f;
         PhysicalDefense.BaseValue = ((Constitution.Value + characterLevel) / 2 + defendingBoost) * ((Constitution.Value * physicalDefenseBalance[0]) + (Strength.Value * physicalDefenseBalance[1]));
         MagicDefense.BaseValue = ((Knowledge.Value + characterLevel) / 2 + defendingBoost) * ((Knowledge.Value * magicDefenseBalance[0]) + (Intelligence.Value * magicDefenseBalance[1]));
         CritChance.BaseValue = Luck.Value * critBalance;
@@ -169,7 +210,36 @@ public class Character : MonoBehaviour {
         MagicDamage.BaseValue = GetMagicDamage();
     }
 
-    ///DERIVED STATS
+    public void AttackTarget(GameObject target)
+    {
+        if (target.GetComponent<Character>().isDefending)
+        {
+            if(weaponType == WeaponType.Physical)
+            {
+                target.GetComponent<Character>().Health = PhysicalDamage.Value - target.GetComponent<Character>().PhysicalDefense.Value;
+            }
+            else if(weaponType == WeaponType.Magical)
+            {
+                target.GetComponent<Character>().Health = MagicDamage.Value - target.GetComponent<Character>().MagicDefense.Value;
+            }
+        }
+        else
+        {
+            if(weaponType == WeaponType.Physical)
+            {
+                target.GetComponent<Character>().Health = PhysicalDamage.Value;
+            }
+            if(weaponType == WeaponType.Magical)
+            {
+                target.GetComponent<Character>().Health = MagicDamage.Value;
+            }
+        }
+    }
+
+    public void Defend()
+    {
+        m_isDefending = true;
+    }
 
     private float GetPhysicalDamage()
     {
@@ -263,7 +333,7 @@ public class Character : MonoBehaviour {
     public string GetStats()
     {
         string stats = "Class: " + characterClass.ToString() + "\nPhysical Damage: " + PhysicalDamage.Value + "\nMagic Damage: " + MagicDamage.Value + 
-            "\nPhysical Defense: " + PhysicalDefense.Value + "\nMagic Defense: " + MagicDefense.Value + "\nHealth: " + Health.Value + "\nMana: " + Mana.Value + 
+            "\nPhysical Defense: " + PhysicalDefense.Value + "\nMagic Defense: " + MagicDefense.Value + "\nHealth: " + Health + "\nMana: " + Mana + 
             "\nIniative: " + Initiative.Value + "\nCrit Chance: " + CritChance.Value + "\nStatus Ailment Chance: " + AilmentChance.Value + "\nDodge Chance: " + DodgeChance.Value;
         return stats;
     }

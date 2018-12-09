@@ -111,6 +111,7 @@ public class BattleController : MonoBehaviour {
         
         //TODO handle changing turns and battle flow here
 
+
     }
 
     private void SpawnAllies(int allyCount)
