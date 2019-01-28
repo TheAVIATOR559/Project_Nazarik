@@ -10,6 +10,7 @@ public class Mouse_Aim : MonoBehaviour {
 
     void Start()
     {
+        target = GameObject.FindGameObjectWithTag("Player");
         offset = target.transform.position - transform.position;
     }
 

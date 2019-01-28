@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Enemy(WORLD)
   - Roaming_Sphere
+  - Enemy(BATTLE)
+  - Ally(BATTLE)
+  - BattleController
   layers:
   - Default
   - TransparentFX

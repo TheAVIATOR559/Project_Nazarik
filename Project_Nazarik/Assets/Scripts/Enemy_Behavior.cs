@@ -6,9 +6,9 @@ public class Enemy_Behavior : MonoBehaviour {
 
     [SerializeField] GameObject m_target;
     [SerializeField] GameObject roamingSphere;
-    [SerializeField] float roamRange = 0;
-    [SerializeField] float detectionAngle = 0;
-    [SerializeField] float detectionDistance = 0;
+    [SerializeField] float roamRange = 30;
+    [SerializeField] float detectionAngle = 45;
+    [SerializeField] float detectionDistance = 7.5f;
     [SerializeField] GameObject battleController;
 
     //not currently used might add later 
@@ -23,10 +23,14 @@ public class Enemy_Behavior : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        roamingSphere.transform.position = transform.position;
+        roamingSphere = transform.parent.transform.GetChild(1).gameObject;
+        m_target = GameObject.FindGameObjectWithTag("Player");
+        battleController = GameObject.FindGameObjectWithTag("BattleController");
+
         scale.x = roamRange;
         scale.z = roamRange;
         roamingSphere.transform.localScale += scale;
+        
 	}
 	
 	// Update is called once per frame
@@ -77,7 +81,7 @@ public class Enemy_Behavior : MonoBehaviour {
         if(collision.gameObject.tag == "Player")
         {
             battleController.GetComponent<BattleController>().enabled = true;
-            Destroy(this.gameObject);
+            Destroy(transform.parent.gameObject);
         }
     }
 }

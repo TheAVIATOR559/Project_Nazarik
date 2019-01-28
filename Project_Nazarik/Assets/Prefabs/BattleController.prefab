@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1609749614823020}
+  m_IsPrefabAsset: 1
+--- !u!1 &1609749614823020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4567450576615904}
+  - component: {fileID: 114461364483136822}
+  m_Layer: 0
+  m_Name: BattleController
+  m_TagString: BattleController
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4567450576615904
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1609749614823020}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.6877403, y: -2.78, z: 3.060669}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114461364483136822
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1609749614823020}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d635cd1ef25fb8b488e95c84fafc08be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleState: 0
+  heroInput: 0
+  enemiesList:
+  - {fileID: 1876798665757450, guid: b879746fe1fb84b4c9d27b37a309473b, type: 2}
+  - {fileID: 1187942133276164, guid: 76a05758ea643d64e9ff60016dc9e72a, type: 2}
+  - {fileID: 1451472408565798, guid: cf9384574f5d488478b828199eadda9d, type: 2}
+  - {fileID: 1853325178677726, guid: 5abf392bb414e224aab4e7e1ccf052c0, type: 2}
+  alliesList:
+  - {fileID: 1058520337561042, guid: 450502a7b28c874469e22e3ba423cb48, type: 2}
+  - {fileID: 1603933238984932, guid: 608ede2ff7b1dc748a74909b94e00b4a, type: 2}
+  - {fileID: 1800296236300626, guid: 288194c8c99d0d341862c7a04ad080ca, type: 2}
+  player: {fileID: 1165890909669184, guid: ddaf1f023abd93a479194d4f32254d56, type: 2}
+  mainCamera: {fileID: 0}
+  characterList: []
+  battleCanvas: {fileID: 223131126758395132, guid: 1227ddaa9a041334899d82e66fdf9947,
+    type: 2}
+  initiativeBar: {fileID: 0}
+  expBar: {fileID: 1323776060270540, guid: 7ba03f3b71cc8a84ea7a2746277f8311, type: 2}
+  itemBar: {fileID: 1401595612162104, guid: 6fc310de4b174f54d9bf3109acb81748, type: 2}
+  noItemsBar: {fileID: 1219839760904942, guid: cfe3a032904159542be7f32585d4b8a5, type: 2}
+  enemyButton: {fileID: 1906697918252476, guid: 986ef336c80214141ab038b199461ce6,
+    type: 2}
+  enemyBar: {fileID: 1096691085820744, guid: 40b01c94f91ddd94f8088872ad0493d9, type: 2}
+  heroBar: {fileID: 1038172138282178, guid: cc816cfe59a72d24db4aa2d85a60a6bc, type: 2}
+  attackBar: {fileID: 1585412414223708, guid: 1a12fad663c6190479971e0235cf67b0, type: 2}
+  defendBar: {fileID: 1102965209878636, guid: eac256333246ee749b28af2ece412a26, type: 2}
+  turnCount: 0
+  activeHeroCount: 0
+  activeEnemyCount: 0
+  heroAction:
+    actor: {fileID: 0}
+    target: {fileID: 0}
+    actionType: 0
+  heroesToManage: []
+  deadCharacters: []
